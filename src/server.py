@@ -1,5 +1,9 @@
+#!venv/bin/python
+# -*- coding: utf-8 -*-
+
 import os
 
+# Flask imports.
 from flask import Flask, send_from_directory, request
 from flask.ext.cors import cross_origin
 from flask.ext.uploads import UploadSet, configure_uploads
