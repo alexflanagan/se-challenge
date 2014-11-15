@@ -1,35 +1,48 @@
-function drag(e) {
-    e.dataTransfer.setData("uploadData", e.target.id);
-}
-
-function drop(e) {
-    var data = e.dataTransfer.getData("uploadData");
-    if (data === "") return;
-
-    e.preventDefault();
-    e.target.appendChild(document.getElementById(data));
-    animateOverlay({ sample: true });
-}
+/*global window*/
+/*global document*/
+/*global YUI*/
 
 function animateOverlay(cfg) {
-    YUI().use('node', 'anim', function(Y) {
-        var nodeName = (cfg.sample ? '#sample_overlay' : "#overlay");
+    'use strict';
+    YUI().use('node', 'anim', function (Y) {
+        var nodeName, animDef, anim;
+
+        nodeName = (cfg.sample ? '#sample_overlay' : "#overlay");
         Y.one(nodeName).setStyle("zIndex", 1);
 
-        var animDef = {
+        animDef = {
             to: { opacity: (cfg.hide ? 0 : 1) },
             node: nodeName,
             duration: 1,
             easing: 'easeBothStrong'
         };
 
-        var anim = new Y.Anim(animDef);
+        anim = new Y.Anim(animDef);
         anim.run();
     });
 }
 
-YUI().use('node', 'event', 'uploader', 'uploader-html5', function(Y) {
+function drag(e) {
+    'use strict';
+    e.dataTransfer.setData("uploadData", e.target.id);
+}
 
+function drop(e) {
+    'use strict';
+    var data = e.dataTransfer.getData("uploadData");
+    if (data === '') {
+        return;
+    }
+
+    e.preventDefault();
+    e.target.appendChild(document.getElementById(data));
+    animateOverlay({ sample: true });
+}
+
+
+
+YUI().use('node', 'event', 'uploader', 'uploader-html5', function (Y) {
+    'use strict';
     Y.Uploader = Y.UploaderHTML5;
 
     var uploader = new Y.Uploader({
@@ -44,9 +57,8 @@ YUI().use('node', 'event', 'uploader', 'uploader-html5', function(Y) {
         selectButtonLabel: ''
     });
 
-    uploader.after("fileselect", function (e) {
+    uploader.after("fileselect", function () {
         uploader.uploadAll();
-        fadeThanks();
     });
 
     uploader.after("uploadcomplete", function showTable(e) {
@@ -54,14 +66,10 @@ YUI().use('node', 'event', 'uploader', 'uploader-html5', function(Y) {
         animateOverlay({ sample: false, hide: true });
         animateOverlay({ sample: true, hide: false });
     });
-    
+
     function init() {
         uploader.render("#uploader");
         Y.one(".yui3-button").hide();
-    }
-
-    function fadeThanks() {
-        //animateOverlay({ sample: false, hide: false });
     }
 
     Y.on("domready", init);
