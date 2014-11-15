@@ -2,6 +2,7 @@ import os
 import psycopg2
 import urlparse
 
+
 class DataWorker:
     rowcount = -1
     resultMarkup = "<div>No results.</div>"
@@ -19,14 +20,14 @@ class DataWorker:
         )
 
         cursor = conn.cursor()
-        
+
         # For debugging: drop the table to clean up before creating it.
         # cursor.execute("DROP TABLE IF EXISTS csvstore")
 
         sql = ''' CREATE TABLE IF NOT EXISTS csvstore
             (entry_date date, category varchar,
             employee_name varchar, employee_address varchar,
-            expense_description varchar, pretax_amount money, 
+            expense_description varchar, pretax_amount money,
             tax_name varchar, tax_amount money) '''
 
         cursor.execute(sql)
@@ -66,7 +67,9 @@ class DataWorker:
 
         for row in cursor.fetchall():
             date, pretax, tax, posttax = row
-            self.resultMarkup += "<tr " + ("class='highlight'" if highlight else '') + '''>
+            rowMarkup = ('<tr %s>' %
+                         ("class='highlight'" if highlight else ''))
+            self.resultMarkup += rowMarkup + '''
                 <td>%s</td>
                 <td>%s</td>
                 <td>%s</td>
@@ -82,4 +85,5 @@ class DataWorker:
         conn.close()
 
     def result(self):
-        return self.resultMarkup #  "%d rows copied! (-1 means error)" % self.rowcount
+        # "%d rows copied! (-1 means error)" % self.rowcount
+        return self.resultMarkup
