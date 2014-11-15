@@ -13,7 +13,7 @@ function drop(e) {
 
 function animateOverlay(cfg) {
     YUI().use('node', 'anim', function(Y) {
-        var nodeName = (cfg.sample ? "#sample_overlay" : "#overlay");
+        var nodeName = (cfg.sample ? '#sample_overlay' : "#overlay");
         Y.one(nodeName).setStyle("zIndex", 1);
 
         var animDef = {
@@ -38,7 +38,7 @@ YUI().use('node', 'event', 'uploader', 'uploader-html5', function(Y) {
         dragAndDropArea: "#uploader",
         fileFieldName: "spreadsheet",
         multipleFiles: false,
-        uploadURL: "//" + window.location.host + "/upload",
+        uploadURL: ['//', window.location.host, '/upload'].join(''),
         simLimit: 1,
         withCredentials: false,
         selectButtonLabel: ''
