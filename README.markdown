@@ -21,13 +21,16 @@ brew install postgres
 Configure Postgres:
 ```
 initdb /usr/local/var/postgres
-
-createdb csvstorage
 ```
 
 Start Postgres:
 ```
 postgres -D /usr/local/var/postgres
+```
+
+Create the database:
+```
+createdb csvstorage
 ```
 
 Set the connection string environment variable. Mine looks like this:
